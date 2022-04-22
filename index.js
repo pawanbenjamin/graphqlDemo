@@ -1,5 +1,4 @@
-const { ApolloServer, UserInputError, gql } = require('apollo-server')
-const { v1: uuid } = require('uuid')
+const { ApolloServer } = require('apollo-server')
 
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
