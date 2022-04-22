@@ -2,6 +2,8 @@ import React from 'react'
 
 import { useQuery, gql } from '@apollo/client'
 
+import AuthForm from './AuthForm'
+
 const ALL_PERSONS = gql`
   query {
     allPersons {
@@ -29,6 +31,7 @@ function App() {
       {result.data.allPersons.map((person, i) => (
         <h4 key={`key: ${i}`}>{person.name}</h4>
       ))}
+      <AuthForm />
     </div>
   )
 }

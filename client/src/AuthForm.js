@@ -33,6 +33,7 @@ const AuthForm = () => {
           placeholder="city"
           onClick={(e) => setCity(e.target.value)}
         />
+        <button type="submit">Submit</button>
       </form>
     </div>
   )
