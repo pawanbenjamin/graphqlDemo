@@ -3,7 +3,6 @@ const { v1: uuid } = require('uuid')
 
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
-const persons = require('./data')
 
 const server = new ApolloServer({
   typeDefs,
