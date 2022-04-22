@@ -1,5 +1,4 @@
 const { UserInputError } = require('apollo-server')
-const { v1: uuid } = require('uuid')
 
 const prisma = require('./prisma')
 
