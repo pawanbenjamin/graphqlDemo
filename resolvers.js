@@ -1,21 +1,29 @@
 const { UserInputError } = require('apollo-server')
 const { v1: uuid } = require('uuid')
 
-const { persons } = require('./data')
+const { prisma } = require('./prisma')
 
 const resolvers = {
   Query: {
-    personCount: () => persons.length,
-    allPersons: (root, args) => {
+    personCount: async () => await prisma.person.findMany({}).length,
+    allPersons: async (root, args) => {
       if (!args.phone) {
-        return persons
+        return await prisma.person.findMany({})
       }
-      const byPhone = (person) => {
-        args.phone === 'YES' ? person.phone : !person.phone
+      if (args.phone === 'YES') {
+        return await prisma.person.findMany({
+          where: {
+            phone: true,
+          },
+        })
       }
-      return persons.filter(byPhone)
     },
-    findPerson: (root, args) => persons.find((p) => p.name === args.name),
+    findPerson: async (root, args) =>
+      await prisma.findUnique({
+        where: {
+          name: args.name,
+        },
+      }),
   },
   Person: {
     address: (root) => {
@@ -26,15 +34,21 @@ const resolvers = {
     },
   },
   Mutation: {
-    addPerson: (root, args) => {
-      if (persons.find((p) => p.name === args.name)) {
+    addPerson: async (root, args) => {
+      const person = await prisma.person.findUnique({
+        where: {
+          name: args.name,
+        },
+      })
+      if (person) {
         throw new UserInputError('Name must be unique', {
           invalidArgs: args.name,
         })
       }
-      const person = { ...args, id: uuid() }
-      persons = persons.concat(person)
-      return person
+      const newPerson = await prisma.person.create({
+        data: args,
+      })
+      return newPerson
     },
     editNumber: (root, args) => {
       const person = persons.find((p) => p.name === args.name)
