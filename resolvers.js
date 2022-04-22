@@ -20,12 +20,14 @@ const resolvers = {
         })
       }
     },
-    findPerson: async (root, args) =>
-      await prisma.person.findUnique({
+    findPerson: async (root, args) => {
+      const person = await prisma.Person.findFirst({
         where: {
           name: args.name,
         },
-      }),
+      })
+      return person
+    },
   },
   Person: {
     address: (root) => {
