@@ -1,17 +1,20 @@
 const { UserInputError } = require('apollo-server')
 const { v1: uuid } = require('uuid')
 
-const { prisma } = require('./prisma')
+const prisma = require('./prisma')
 
 const resolvers = {
   Query: {
-    personCount: async () => await prisma.person.findMany({}).length,
+    personCount: async () => {
+      const people = await prisma.Person.findMany()
+      return people.length
+    },
     allPersons: async (root, args) => {
       if (!args.phone) {
-        return await prisma.person.findMany({})
+        return await prisma.Person.findMany()
       }
       if (args.phone === 'YES') {
-        return await prisma.person.findMany({
+        return await prisma.Person.findMany({
           where: {
             phone: true,
           },
@@ -19,7 +22,7 @@ const resolvers = {
       }
     },
     findPerson: async (root, args) =>
-      await prisma.findUnique({
+      await prisma.person.findUnique({
         where: {
           name: args.name,
         },
@@ -35,7 +38,7 @@ const resolvers = {
   },
   Mutation: {
     addPerson: async (root, args) => {
-      const person = await prisma.person.findUnique({
+      const person = await prisma.Person.findUnique({
         where: {
           name: args.name,
         },
@@ -45,19 +48,20 @@ const resolvers = {
           invalidArgs: args.name,
         })
       }
-      const newPerson = await prisma.person.create({
+      const newPerson = await prisma.Person.create({
         data: args,
       })
       return newPerson
     },
-    editNumber: (root, args) => {
-      const person = persons.find((p) => p.name === args.name)
-      if (!person) {
-        return null
-      }
-      const updatedPerson = { ...person, phone: args.phone }
-      persons = persons.map((p) => (p.name === args.name ? updatedPerson : p))
-      return updatedPerson
+    editNumber: async (root, args) => {
+      const person = await prisma.Person.update({
+        where: {
+          name: args.name,
+        },
+        data: {
+          number: args.number,
+        },
+      })
     },
   },
 }
