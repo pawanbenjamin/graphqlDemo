@@ -13,7 +13,7 @@ const createTables = async () => {
     CREATE TABLE "Person" (
         "id" SERIAL NOT NULL,
         "name" VARCHAR(255) NOT NULL,
-        "phone" INTEGER,
+        "phone" VARCHAR (255),
         "street" TEXT NOT NULL,
         "city" TEXT NOT NULL,
 

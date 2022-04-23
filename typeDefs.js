@@ -8,7 +8,7 @@ const typeDefs = gql`
 
   type Person {
     name: String!
-    phone: Int
+    phone: String
     address: Address!
     id: ID!
   }

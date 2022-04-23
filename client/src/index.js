@@ -5,7 +5,6 @@ import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  gql,
   ApolloProvider,
 } from '@apollo/client'
 
@@ -19,22 +18,22 @@ const client = new ApolloClient({
   }),
 })
 
-const query = gql`
-  query {
-    allPersons {
-      name
-      phone
-      address {
-        street
-        city
-      }
-      id
-    }
-  }
-`
+// const query = gql`
+//   query {
+//     allPersons {
+//       name
+//       phone
+//       address {
+//         street
+//         city
+//       }
+//       id
+//     }
+//   }
+// `
 
-client.query({ query }).then((res) => console.log(res))
-// createRoot(container!) if you use TypeScript
+// client.query({ query }).then((res) => console.log(res))
+
 root.render(
   <ApolloProvider client={client}>
     <App />

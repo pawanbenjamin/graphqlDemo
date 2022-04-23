@@ -13,6 +13,8 @@ function App() {
     return <div>Loading...</div>
   }
 
+  console.log(result.data)
+
   return (
     <div style={{ textAlign: 'center' }}>
       <h3>People:</h3>

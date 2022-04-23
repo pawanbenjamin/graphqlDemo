@@ -11,7 +11,7 @@ const AuthForm = () => {
   const [error, setError] = useState('')
 
   const [createPerson] = useMutation(CREATE_PERSON, {
-    variables: { name, street, city },
+    variables: { name, street, city, phone },
     refetchQueries: [{ query: ALL_PERSONS }],
     onError: (error) => {
       setError(error.graphQLErrors[0].message)
@@ -46,7 +46,17 @@ const AuthForm = () => {
         placeholder="city"
         onChange={(e) => setCity(e.target.value)}
       />
-      <button onClick={createPerson}>Submit</button>
+      <button
+        onClick={() => {
+          createPerson()
+          setName('')
+          setStreet('')
+          setPhone('')
+          setCity('')
+        }}
+      >
+        Submit
+      </button>
     </div>
   )
 }
