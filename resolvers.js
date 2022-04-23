@@ -39,20 +39,16 @@ const resolvers = {
   },
   Mutation: {
     addPerson: async (root, args) => {
-      const person = await prisma.Person.findUnique({
-        where: {
-          name: args.name,
-        },
-      })
-      if (person) {
-        throw new UserInputError('Name must be unique', {
-          invalidArgs: args.name,
-        })
-      }
-      const newPerson = await prisma.Person.create({
+      const person = await prisma.Person.create({
         data: args,
       })
-      return newPerson
+      console.log('Person', person)
+      // if (!person) {
+      //   throw new UserInputError('Name must be unique', {
+      //     invalidArgs: args.name,
+      //   })
+      // }
+      return person
     },
     editNumber: async (root, args) => {
       const person = await prisma.Person.update({
